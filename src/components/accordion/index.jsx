@@ -7,27 +7,52 @@ import "./styles.css";
 
 export default function Accordion() {
   const [selected, setSelected] = useState(null);
+  const [enableMultiselection, setEnableMultiselection] = useState(false);
+  const [multiple, setMultiple] = useState([]);
 
   function handleSingleSelection(currentId) {
     setSelected(currentId === selected ? null : currentId);
   }
 
+  function handleMultipleSelection(currentId) {
+    let copyMultiple = [...multiple];
+    const indexOfCurrentId = copyMultiple.indexOf(currentId);
+    if (indexOfCurrentId === -1) copyMultiple.push(currentId);
+    else copyMultiple.splice(indexOfCurrentId, 1);
+
+    setMultiple(copyMultiple);
+    console.log(copyMultiple);
+  }
+
   return (
     <div className="wrapper">
+      <button onClick={() => setEnableMultiselection(!enableMultiselection)}>
+        Enable Multiselection
+      </button>
       <div className="accordion">
         {data && data.length > 0 ? (
           data.map((dataItem) => (
             <div className="item">
               <div
                 className="title"
-                onClick={() => handleSingleSelection(dataItem.id)}
+                onClick={
+                  enableMultiselection
+                    ? () => handleMultipleSelection(dataItem.id)
+                    : () => handleSingleSelection(dataItem.id)
+                }
               >
                 <h3>{dataItem.question}</h3>
                 <span>+</span>
               </div>
-              {selected === dataItem.id ? (
+              {enableMultiselection ? (
+                multiple.indexOf(dataItem.id) !== -1 && (
+                  <div className="content">{dataItem.answer}</div>
+                )
+              ) : selected === dataItem.id ||
+                multiple.indexOf(dataItem.id) !== -1 ? (
                 <div className="content">{dataItem.answer}</div>
               ) : null}
+              
             </div>
           ))
         ) : (
