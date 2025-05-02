@@ -24,10 +24,21 @@ export default function Accordion() {
     console.log(copyMultiple);
   }
 
+  function toggleMultiselection() {
+    setSelected(null)
+    setEnableMultiselection(!enableMultiselection);
+
+    if (enableMultiselection) {
+      setMultiple([]);
+    }
+  }
+
   return (
     <div className="wrapper">
-      <button onClick={() => setEnableMultiselection(!enableMultiselection)}>
-        Enable Multiselection
+      <button onClick={toggleMultiselection}>
+        {enableMultiselection
+          ? "Switch to Single Selection"
+          : "Enable Multi Selection"}{" "}
       </button>
       <div className="accordion">
         {data && data.length > 0 ? (
@@ -52,7 +63,6 @@ export default function Accordion() {
                 multiple.indexOf(dataItem.id) !== -1 ? (
                 <div className="content">{dataItem.answer}</div>
               ) : null}
-              
             </div>
           ))
         ) : (
