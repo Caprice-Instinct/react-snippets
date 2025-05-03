@@ -32,6 +32,13 @@ export default function RandomColour() {
     if (type === "rgb") handleCreateRandomRgbColour();
     else handleCreateRandomHexColour();
   }, [type]);
+
+  function handleTypeChange() {
+    let typeOfColour = type;
+
+    if (typeOfColour === "hex") setType("rgb");
+    else setType("hex");
+  }
   return (
     <div
       style={{
@@ -43,6 +50,9 @@ export default function RandomColour() {
     >
       <button onClick={() => setType("hex")}>Create HEX color</button>
       <button onClick={() => setType("rgb")}>Create RGB color</button>
+      <button onClick={handleTypeChange}>
+        {type === "hex" ? "Switch to RGB" : "Switch to HEX"}
+      </button>
       <button
         onClick={
           type === "hex"
